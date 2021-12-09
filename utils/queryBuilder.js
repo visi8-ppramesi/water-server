@@ -3,7 +3,7 @@ const innerAssign = (obj, name, innerObj, innerName) => {
         obj[name][innerName] = innerObj
     }else{
         obj[name] = {
-            innerName: innerObj
+            [innerName]: innerObj
         }
     }
 }
@@ -11,7 +11,7 @@ const innerAssign = (obj, name, innerObj, innerName) => {
 module.exports = (query) => {
     const retVal = {}
     if(query.location) retVal.location = query.location
-    if(query.dategt) innerAssign(retVal, 'date', query.dategt, '$gt')
-    if(query.datelt) innerAssign(retVal, 'date', query.datelt, '$lt')
+    if(query.dategt) innerAssign(retVal, 'timestamp', query.dategt, '$gt')
+    if(query.datelt) innerAssign(retVal, 'timestamp', query.datelt, '$lt')
     return retVal
 }

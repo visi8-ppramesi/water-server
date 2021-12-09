@@ -3,12 +3,16 @@ const router = require('./config/router.js')
 const db = require('./config/database')
 const http = require('http')
 const socket = require('socket.io')
+const cors = require('cors')
 
 // const MongoClient = require('mongodb').MongoClient
 
 class Server{
     constructor(){
         this.app = express()
+        this.app.use(cors({
+            origin: '*'
+        }));
         this.server = http.Server(this.app)
         this.socket = socket(this.server, {
             cors: {

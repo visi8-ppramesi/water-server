@@ -28,6 +28,34 @@ router
   .post(hashCheck, controller.create);
 
 router
+  .route('/withflowdata')
+
+  /**
+  * @api {post} /location/withflowdata listWithFlowdata
+  * @apiGroup Foo
+  *
+  * @apiParam {String} name
+  *
+  * @apiSuccess {Boolean} success=true
+  * @apiSuccess {Foo} data
+  */
+  .post(controller.listWithFlowdata)
+
+router
+  .route('/withflowdata/:id')
+
+  /**
+  * @api {post} /location/withflowdata listWithFlowdata
+  * @apiGroup Foo
+  *
+  * @apiParam {String} name
+  *
+  * @apiSuccess {Boolean} success=true
+  * @apiSuccess {Foo} data
+  */
+  .post(controller.findWithFlowdata)
+
+router
   .route('/:id')
 
   /**

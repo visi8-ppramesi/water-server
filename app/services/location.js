@@ -1,4 +1,5 @@
 const Model = require('../models/location.js');
+const flowdataProcessor = require('../../utils/flowdataProcessor.js').flowdataProcessor
 
 const _findOne = (criteria = {}) => new Promise((resolve, reject) => {
   Model
@@ -25,6 +26,35 @@ module.exports = {
           .limit(limit)
           .skip(skip)
           .sort(sort);
+  },
+
+  listWithFlowdata: (body) => {
+      const { limit, skip, sort, find, popMatch } = body;
+      return Model
+          .find(find)
+          .limit(limit)
+          .skip(skip)
+          .sort(sort)
+          .populate({ path: 'flowdata', match: popMatch })
+          .lean()
+          .then((data) => {
+            let modData = [...data]
+            for(let idx = 0; idx < modData.length; idx++){
+              const loc = data[idx]
+              const processedData = flowdataProcessor(loc.flowdata)
+              Object.keys(processedData).forEach((procKey) => {
+                modData[idx][procKey] = processedData[procKey]
+              })
+            }
+            return modData
+          });
+  },
+
+  findWithFlowdata: (_id, body) => {
+      const { popMatch } = body;
+      return Model
+          .findOne({ _id })
+          .populate({ path: 'flowdata', match: popMatch });
   },
 
   create: (body = {}) => {

@@ -10,6 +10,22 @@ module.exports = {
 			.catch(err => ErrorHelper.response(res, err));
 	},
 
+	listWithFlowdata: (req, res) => {
+		LocationService
+			.listWithFlowdata(req.body)
+			.then(data => {
+				res.status(200).json({ success: true, data })
+			})
+			.catch(err => ErrorHelper.response(res, err));
+	},
+
+	findWithFlowdata: (req, res) => {
+		LocationService
+			.findWithFlowdata(req.params.id, req.body)
+			.then(data => res.status(200).json({ success: true, data }))
+			.catch(err => ErrorHelper.response(res, err));
+	},
+
 	create: (req, res) => {
 		LocationService
 			.create(req.body)

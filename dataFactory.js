@@ -55,22 +55,22 @@ const main = async () => {
         for(let i = 0; i < locsId.length; i++){
             const location = locsId[i]
             if(flowData[location]){
-                const changeUp = Math.random() * 100 > 60
+                const changeUp = Math.random() * 100 > 80
                 if(changeUp){
-                    flowData[location] = Math.random() * 100
+                    flowData[location] = Math.random()
                 }else{
                     let randomValue = getNormalValue(5, 1)
                     flowData[location] = Math.max(0, flowData[location] + randomValue)
                 }
     
             }else{
-                flowData[location] = Math.random() * 100
+                flowData[location] = Math.random()
             }
             
             const resp = (await createFlowdata(location, flowData[location])).data
             console.log(resp)
         }
-    }, 5000)
+    }, 10000)
 }
 
 main()
