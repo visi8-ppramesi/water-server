@@ -19,6 +19,17 @@ const _delete = (criteria = {}) => Model.remove(criteria);
 
 module.exports = {
 
+  ping: (_id, status) => new Promise((resolve, reject) => {
+    _findById(_id)
+        .then(() => {
+            Model.updateOne({ _id }, { $set: {
+                locationStatus: status,
+                lastStatusTimestamp: +(new Date())
+            }}).then(resolve).catch(reject)
+        })
+        .catch(reject)
+  }),
+
   list: (query = {}) => {
       const { limit, skip, sort, find } = query;
       return Model

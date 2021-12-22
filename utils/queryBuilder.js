@@ -11,7 +11,9 @@ const innerAssign = (obj, name, innerObj, innerName) => {
 module.exports = (query) => {
     const retVal = {}
     if(query.location) retVal.location = query.location
-    if(query.dategt) innerAssign(retVal, 'timestamp', query.dategt, '$gt')
-    if(query.datelt) innerAssign(retVal, 'timestamp', query.datelt, '$lt')
+    if(query.dategt) innerAssign(retVal, 'date', query.dategt, '$gt')
+    if(query.datelt) innerAssign(retVal, 'date', query.datelt, '$lt')
+    if(query.timestampgt) innerAssign(retVal, 'timestamp', query.timestampgt, '$gt')
+    if(query.timestamplt) innerAssign(retVal, 'timestamp', query.timestamplt, '$lt')
     return retVal
 }

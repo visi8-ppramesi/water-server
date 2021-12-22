@@ -1,6 +1,8 @@
 const express = require('express');
 const controller = require('../controllers/location');
 const hashCheck = require('../middlewares/checkHash')
+const passport = require('passport')
+const { authenticator } = require('../../config/passport.js')
 
 const router = express.Router();
 
@@ -14,7 +16,7 @@ router
   * @apiSuccess {Boolean} success=true
   * @apiSuccess {Foo[]} data
   */
-  .get(controller.list)
+  .get(authenticator(passport), controller.list)
 
   /**
   * @api {post} /location Create
@@ -28,6 +30,18 @@ router
   .post(hashCheck, controller.create);
 
 router
+  .route('/ping/:id')
+
+  /**
+  * @api {get} /ping a location to keep status
+  * @apiGroup Foo
+  *
+  * @apiSuccess {Boolean} success=true
+  * @apiSuccess {Foo[]} data
+  */
+  .post(hashCheck, controller.ping)
+
+router
   .route('/withflowdata')
 
   /**
@@ -39,7 +53,7 @@ router
   * @apiSuccess {Boolean} success=true
   * @apiSuccess {Foo} data
   */
-  .post(controller.listWithFlowdata)
+  .post(authenticator(passport), controller.listWithFlowdata)
 
 router
   .route('/withflowdata/:id')
@@ -53,7 +67,7 @@ router
   * @apiSuccess {Boolean} success=true
   * @apiSuccess {Foo} data
   */
-  .post(controller.findWithFlowdata)
+  .post(authenticator(passport), controller.findWithFlowdata)
 
 router
   .route('/:id')
@@ -65,7 +79,7 @@ router
   * @apiSuccess {Boolean} success=true
   * @apiSuccess {Foo} data
   */
-  .get(controller.findById)
+  .get(authenticator(passport), controller.findById)
 
   /**
   * @api {put} /location/:id Update
@@ -75,7 +89,7 @@ router
   *
   * @apiSuccess {Boolean} success=true
   */
-  .put(controller.update)
+  .put(authenticator(passport), controller.update)
 
   /**
   * @api {delete} /location/:id Delete
@@ -83,6 +97,6 @@ router
   *
   * @apiSuccess {Boolean} success=true
   */
-  .delete(controller.delete);
+  .delete(authenticator(passport), controller.delete);
 
 module.exports = router;

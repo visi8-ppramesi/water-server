@@ -1,15 +1,21 @@
 const express = require('express')
 const router = require('./config/router.js')
 const db = require('./config/database')
+const logger = require('./config/log.js')
+const passportConfig = require('./config/passport.js')
 const http = require('http')
 const socket = require('socket.io')
 const cors = require('cors')
+const morgan = require('morgan')
+const env = require('dotenv').config().parsed
+const passport = require('passport')
 
 // const MongoClient = require('mongodb').MongoClient
 
 class Server{
     constructor(){
         this.app = express()
+        this.app.use(morgan('combined', { stream: logger.stream }))
         this.app.use(cors({
             origin: '*'
         }));
@@ -23,7 +29,7 @@ class Server{
 
         this.app.use(express.json());
         this.app.use(express.urlencoded({
-          extended: true
+            extended: true
         }));
 
         this.app.use((req, res, next) => {
@@ -35,6 +41,8 @@ class Server{
             res.setHeader("Content-Type", "application/json");
             next();
         });
+
+        passportConfig.init(passport)
 
         router(this.app)
         db()

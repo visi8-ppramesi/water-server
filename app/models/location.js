@@ -25,7 +25,15 @@ const LocationSchema = new Schema({
     },
     locationType: {
         type: String,
+    },
+    locationStatus: {
+        type: String,
+        enum: ['ON', 'OFF', 'ERROR'],
+        default: 'OFF'
+    },
+    lastStatusTimestamp: {
+        type: Number
     }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('location', LocationSchema);

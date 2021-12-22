@@ -17,8 +17,10 @@ module.exports = (app) => {
 
   // ROUTES
 
-  app.use('/api/flowdata', getRoute('flowdata'));
-  app.use('/api/location', getRoute('location'))
+  app.use('/v1/api/flowdata', getRoute('flowdata'));
+  app.use('/v1/api/location', getRoute('location'))
+  app.use('/v1/api/aggregate', getRoute('aggregate'));
+  app.use('/v1/api/user', getRoute('user'))
 
 
   // ERROR HANDLERS

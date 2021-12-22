@@ -3,6 +3,13 @@ const ErrorHelper = require('../helpers/error');
 
 module.exports = {
 
+	ping: (req, res) => {
+		LocationService
+			.ping(req.params.id, req.body.status)
+			.then(data => res.status(200).json({ success: true, data }))
+			.catch(err => ErrorHelper.response(res, err))
+	},
+
 	list: (req, res) => {
 		LocationService
 			.list(req.query)
