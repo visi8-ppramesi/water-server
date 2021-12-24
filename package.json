@@ -23,6 +23,7 @@
     "later": "^1.2.0",
     "lodash": "^4.17.21",
     "mongodb": "^4.2.1",
+    "mongodb-topology-manager": "^2.1.0",
     "mongoose": "^6.0.14",
     "morgan": "^1.10.0",
     "passport": "^0.5.2",

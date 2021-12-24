@@ -3,6 +3,7 @@ const router = require('./config/router.js')
 const db = require('./config/database')
 const logger = require('./config/log.js')
 const passportConfig = require('./config/passport.js')
+const rolesMiddleware = require('./app/middlewares/roles.js')
 const http = require('http')
 const socket = require('socket.io')
 const cors = require('cors')
@@ -15,6 +16,7 @@ const passport = require('passport')
 class Server{
     constructor(){
         this.app = express()
+        this.app.set('trust proxy', true)
         this.app.use(morgan('combined', { stream: logger.stream }))
         this.app.use(cors({
             origin: '*'

@@ -5,6 +5,9 @@ const path = require('path')
 const db = require('../config/database.js')
 const flowdata = require('../app/models/flowdata.js')
 const location = require('../app/models/location.js')
+const { create: createLocation } = require('../app/services/location.js')
+
+const randomAddresses = JSON.parse(fs.readFileSync(path.join(path.resolve(), 'randomAddresses.json').toString()))
 
 const now = (new Date())
 
@@ -33,7 +36,27 @@ const generateFakeFlowrate = (prevValue) => {
 
 const main = async () => {
     db()
-    flowdata.collection.drop()
+    await flowdata.collection.drop()
+    await location.collection.drop()
+    const locsId = []
+
+    for(let i = 0; i < 10; i++){
+        const latitude = Math.random() * 180 - 90
+        const longitude = Math.random() * 360 - 180
+        const address = randomAddresses[Math.floor(Math.random() * randomAddresses.length)]
+        const name = (Math.random() + 1).toString(36).slice(2)
+        const params = {}
+        params.name = name
+        params.address = address
+        params.geocoordinate = { latitude, longitude }
+        if(locsId.length > 1 && Math.random() > 0.5){
+            params.parent = locsId[Math.floor(Math.random() * locsId.length)]
+        }
+        // const locs = (await axios.post(`${baseUrl}location`, params)).data.data
+        await createLocation(params)
+        // locsId.push(locs._id)
+    }
+    console.log('locs created')
 
     const locations = await location.find({})
     locations.forEach((loc) => {
@@ -73,7 +96,7 @@ const main = async () => {
         count++
     }
 
-    // console.log(changes.map(v => v.length))
+    console.log(JSON.stringify(changes).length)
 
     process.exit(0)
 }

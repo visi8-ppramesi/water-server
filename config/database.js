@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
-const CONN_STR = 'mongodb://127.0.0.1:27017/sensor-server'
+const mongoose = require('mongoose')
+const env = require('dotenv').config().parsed
+const CONN_STR = env.DB_HOST//'mongodb://127.0.0.1:27018,127.0.0.1:27019,127.0.0.1:27020/sensor-server?replicaSet=rs0'
 
 module.exports = () => {
     mongoose.Promise = global.Promise;

@@ -3,7 +3,7 @@ const _ = require('lodash')
 const db = require('../config/database.js')
 const location = require('../app/models/location.js')
 
-const baseUrl = 'http://localhost:3000/api/'
+const baseUrl = 'http://localhost:3000/v1/api/'
 
 let signaler = true
 

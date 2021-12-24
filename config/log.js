@@ -24,6 +24,7 @@ var logger = winston.createLogger({
   transports: [
     new (winston.transports.Console)(options.console),
   ],
+  defaultMeta: { pid: process.pid },
   exitOnError: false, // do not exit on handled exceptions
 });
 

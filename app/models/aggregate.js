@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const env = require('dotenv').config().parsed
+const aggregateStreamHandler = require('../handlers/stream/aggregate.js')
 
 const Schema = mongoose.Schema;
 
@@ -21,4 +23,10 @@ const AggregateSchema = new Schema({
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('aggregate', AggregateSchema);
+const AggregateModel = mongoose.model('aggregate', AggregateSchema)
+
+if(env.DB_IS_REPLICA_SET === 'true'){
+    AggregateModel.watch().on('change', aggregateStreamHandler.invoker())
+}
+
+module.exports = AggregateModel

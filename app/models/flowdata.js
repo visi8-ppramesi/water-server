@@ -18,4 +18,6 @@ const FlowdataSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('flowdata', FlowdataSchema);
+const FlowdataModel = mongoose.model('flowdata', FlowdataSchema)
+
+module.exports = FlowdataModel

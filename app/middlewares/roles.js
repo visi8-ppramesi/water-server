@@ -1,6 +1,7 @@
 const rules = {}
 
 module.exports = (req, res, next) => {
+    console.log(req.originalUrl)
     if(req.user){
         //do something with rules
         if(true){

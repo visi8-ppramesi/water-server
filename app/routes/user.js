@@ -1,31 +1,82 @@
 const express = require('express');
 const controller = require('../controllers/user.js');
 const userRegisterValidator = require('../validators/userRegister.js')
+const passport = require('passport')
+const { authenticator } = require('../../config/passport.js')
+const { buildRoutes } = require('./utils/routing.js')
 
 const router = express.Router();
 
-router
-    .route('/login')
+const userRouteConfig = [
+    {
+        route: '/',
+        endPoints: [
+            {
+                routeName: 'getUser',
+                method: 'get',
+                endwares: [authenticator(passport), controller.get]
+            }
+        ]
+    },
+    {
+        route: '/login',
+        endPoints: [
+            {
+                routeName: 'loginUser',
+                method: 'post',
+                endwares: [controller.login]
+            }
+        ]
+    },
+    {
+        route: '/register',
+        endPoints: [
+            {
+                routeName: 'registerUser',
+                method: 'post',
+                endwares: [...userRegisterValidator, controller.register]
+            }
+        ]
+    }
+]
 
-    /**
-     * @api {get} /aggregate//:locationId/availabledates Find aggregate data dates (just in case dating turns fucky)
-     * @apiGroup Foo
-     *
-     * @apiSuccess {Boolean} success=true
-     * @apiSuccess {Foo} data
-     */
-    .post(controller.login)
+module.exports = buildRoutes(router, userRouteConfig)
 
-router
-    .route('/register')
+// router
+//     .route('/')
 
-    /**
-     * @api {get} /aggregate//:locationId/:date/:name Find aggregate data
-     * @apiGroup Foo
-     *
-     * @apiSuccess {Boolean} success=true
-     * @apiSuccess {Foo} data
-     */
-    .post(...userRegisterValidator, controller.register)
+//     /**
+//      * @api {get} /user/ get current user
+//      * @apiGroup Foo
+//      *
+//      * @apiSuccess {Boolean} success=true
+//      * @apiSuccess {Foo} data
+//      */
+//     .get(authenticator(passport), controller.get)
 
-module.exports = router;
+
+// router
+//     .route('/login')
+
+//     /**
+//      * @api {get} /user/login user login
+//      * @apiGroup Foo
+//      *
+//      * @apiSuccess {Boolean} success=true
+//      * @apiSuccess {Foo} data
+//      */
+//     .post(controller.login)
+
+// router
+//     .route('/register')
+
+//     /**
+//      * @api {get} /user/register user register
+//      * @apiGroup Foo
+//      *
+//      * @apiSuccess {Boolean} success=true
+//      * @apiSuccess {Foo} data
+//      */
+//     .post(...userRegisterValidator, controller.register)
+
+// module.exports = router;

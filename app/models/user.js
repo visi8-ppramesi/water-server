@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 const env = require('dotenv').config().parsed
-const roles = require('../../config/roles.js')
+const { roles } = require('../../config/roles.js')
 
 const Schema = mongoose.Schema;
 
@@ -42,7 +42,7 @@ UserSchema.methods.validatePassword = function(rawPassword) {
     return this.password === password;
 };
   
-UserSchema.methods.generateJWT = function() {
+UserSchema.methods.generateJWT = function(userInfo = {}) {
     const expirationDate = new Date(+(new Date()) + parseInt(env.JWT_EXPIRATION));
     console.log(parseInt(expirationDate.getTime(), 10))
   
@@ -50,14 +50,15 @@ UserSchema.methods.generateJWT = function() {
         email: this.email,
         id: this._id,
         exp: parseInt(expirationDate.getTime(), 10),
+        ...userInfo
     }, env.JWT_SECRET);
 }
   
-UserSchema.methods.toAuthJSON = function() {
+UserSchema.methods.toAuthJSON = function(userInfo = {}) {
     return {
         id: this._id,
         email: this.email,
-        token: this.generateJWT(),
+        token: this.generateJWT(userInfo),
     };
 };
 
@@ -73,4 +74,6 @@ UserSchema.methods.removeRole = function(role){
     }
 }
 
-module.exports = mongoose.model('user', UserSchema);
+const UserModel = mongoose.model('user', UserSchema)
+
+module.exports = UserModel

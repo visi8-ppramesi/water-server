@@ -1,62 +1,103 @@
 const express = require('express');
-const controller = require('../controllers/flowdata');
+const controller = require('../controllers/flowdata')
 const hashCheck = require('../middlewares/checkHash')
 const passport = require('passport')
 const { authenticator } = require('../../config/passport.js')
+const { buildRoutes } = require('./utils/routing.js')
 
 const router = express.Router();
 
-router
-  .route('/')
+const flowdataRouteConfig = [
+    {
+        route: '/',
+        endPoints: [
+            {
+                routeName: 'listFlowdata',
+                method: 'get',
+                endwares: [authenticator(passport), controller.list]
+            },
+            {
+                routeName: 'postFlowdata',
+                method: 'post',
+                endwares: [hashCheck, controller.create]
+            },
+        ]
+    },
+    {
+        route: '/:id',
+        endPoints: [
+            {
+                routeName: 'getFlowdata',
+                method: 'get',
+                endwares: [authenticator(passport), controller.findById]
+            },
+            {
+                routeName: 'putFlowdata',
+                method: 'put',
+                endwares: [authenticator(passport), controller.update]
+            },
+            {
+                routeName: 'deleteFlowdata',
+                method: 'delete',
+                endwares: [authenticator(passport), controller.delete]
+            }
+        ]
+    },
+]
 
-  /**
-  * @api {get} /flowdata List
-  * @apiGroup Foo
-  *
-  * @apiSuccess {Boolean} success=true
-  * @apiSuccess {Foo[]} data
-  */
-  .get(authenticator(passport), controller.list)
+module.exports = buildRoutes(router, flowdataRouteConfig);
 
-  /**
-  * @api {post} /flowdata Create
-  * @apiGroup Foo
-  *
-  * @apiParam {String} name
-  *
-  * @apiSuccess {Boolean} success=true
-  * @apiSuccess {Foo} data
-  */
-  .post(hashCheck, controller.create);
+// router
+//   .route('/')
 
-router
-  .route('/:id')
+//   /**
+//   * @api {get} /flowdata List
+//   * @apiGroup Foo
+//   *
+//   * @apiSuccess {Boolean} success=true
+//   * @apiSuccess {Foo[]} data
+//   */
+//   .get(authenticator(passport), controller.list)
 
-  /**
-  * @api {get} /flowdata/:id Find
-  * @apiGroup Foo
-  *
-  * @apiSuccess {Boolean} success=true
-  * @apiSuccess {Foo} data
-  */
-  .get(authenticator(passport), controller.findById)
+//   /**
+//   * @api {post} /flowdata Create
+//   * @apiGroup Foo
+//   *
+//   * @apiParam {String} name
+//   *
+//   * @apiSuccess {Boolean} success=true
+//   * @apiSuccess {Foo} data
+//   */
+//   .post(hashCheck, controller.create);
 
-  /**
-  * @api {put} /flowdata/:id Update
-  * @apiGroup Foo
-  *
-  * @apiParam {String} name
-  *
-  * @apiSuccess {Boolean} success=true
-  */
-  .put(authenticator(passport), controller.update)
+// router
+//   .route('/:id')
 
-  /**
-  * @api {delete} /flowdata/:id Delete
-  * @apiGroup Foo
-  *
-  * @apiSuccess {Boolean} success=true
-  */
-  .delete(authenticator(passport), controller.delete);
+//   /**
+//   * @api {get} /flowdata/:id Find
+//   * @apiGroup Foo
+//   *
+//   * @apiSuccess {Boolean} success=true
+//   * @apiSuccess {Foo} data
+//   */
+//   .get(authenticator(passport), controller.findById)
 
-module.exports = router;
+//   /**
+//   * @api {put} /flowdata/:id Update
+//   * @apiGroup Foo
+//   *
+//   * @apiParam {String} name
+//   *
+//   * @apiSuccess {Boolean} success=true
+//   */
+//   .put(authenticator(passport), controller.update)
+
+//   /**
+//   * @api {delete} /flowdata/:id Delete
+//   * @apiGroup Foo
+//   *
+//   * @apiSuccess {Boolean} success=true
+//   */
+//   .delete(authenticator(passport), controller.delete);
+
+// module.exports = router;
