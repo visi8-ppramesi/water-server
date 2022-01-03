@@ -37,7 +37,7 @@ module.exports = {
 		LocationService
 			.create(req.body)
 			.then(data => {
-				req.socket.emit('location-added', data)
+				// req.socket.emit('location-added', data)
 				res.status(200).json({ success: true, data }
 			)})
 			.catch(err => ErrorHelper.response(res, err));

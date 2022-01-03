@@ -14,7 +14,7 @@ module.exports = {
 		FlowdataService
 			.create(req.body)
 			.then(data => {
-				req.socket.emit('flowdata-added', data)
+				// req.socket.emit('flowdata-added', data)
 				res.status(200).json({ success: true, data }
 			)})
 			.catch(err => ErrorHelper.response(res, err));

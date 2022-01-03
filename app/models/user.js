@@ -3,6 +3,7 @@ const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 const env = require('dotenv').config().parsed
 const { roles } = require('../../config/roles.js')
+const userStreamHandler = require('../handlers/stream/user.js')
 
 const Schema = mongoose.Schema;
 
@@ -75,5 +76,9 @@ UserSchema.methods.removeRole = function(role){
 }
 
 const UserModel = mongoose.model('user', UserSchema)
+
+if(env.DB_IS_REPLICA_SET === 'true'){
+    UserModel.watch().on('change', userStreamHandler.invoker())
+}
 
 module.exports = UserModel

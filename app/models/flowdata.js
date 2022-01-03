@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const env = require('dotenv').config().parsed
+const flowdataStreamHandler = require('../handlers/stream/flowdata.js')
 
 const Schema = mongoose.Schema;
 
@@ -19,5 +21,9 @@ const FlowdataSchema = new Schema({
 });
 
 const FlowdataModel = mongoose.model('flowdata', FlowdataSchema)
+
+if(env.DB_IS_REPLICA_SET === 'true'){
+    FlowdataModel.watch().on('change', flowdataStreamHandler.invoker())
+}
 
 module.exports = FlowdataModel

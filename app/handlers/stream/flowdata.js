@@ -6,20 +6,20 @@ class FlowdataStreamHandler extends StreamHandler{
     }
 
     functionOne(args){
-        console.log(args)
+        console.log(args.data)
     }
 
-    static factory(){
-        const flowdataStreamHandler = new FlowdataStreamHandler()
-        const functionNames = Object.getOwnPropertyNames(FlowdataStreamHandler.prototype).filter(name => name !== 'constructor')
+    // static factory(){
+    //     const flowdataStreamHandler = new FlowdataStreamHandler()
+    //     const functionNames = Object.getOwnPropertyNames(FlowdataStreamHandler.prototype).filter(name => name !== 'constructor')
         
-        functionNames.forEach((name) => {
-            console.log(name)
-            flowdataStreamHandler.pushFunction(flowdataStreamHandler[name].bind(flowdataStreamHandler))
-        })
+    //     functionNames.forEach((name) => {
+    //         flowdataStreamHandler.register(flowdataStreamHandler[name].bind(flowdataStreamHandler))
+    //     })
 
-        return flowdataStreamHandler
-    }
+    //     return flowdataStreamHandler
+    // }
 }
 
-module.exports = FlowdataStreamHandler.factory()
+module.exports = StreamHandler.streamHandlerFactory(FlowdataStreamHandler)
+// module.exports = FlowdataStreamHandler.factory()

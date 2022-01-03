@@ -6,20 +6,20 @@ class LocationStreamHandler extends StreamHandler{
     }
 
     functionOne(args){
-        console.log(args)
+        console.log(args.data)
     }
 
-    static factory(){
-        const locationStreamHandler = new LocationStreamHandler()
-        const functionNames = Object.getOwnPropertyNames(LocationStreamHandler.prototype).filter(name => name !== 'constructor')
+    // static factory(){
+    //     const locationStreamHandler = new LocationStreamHandler()
+    //     const functionNames = Object.getOwnPropertyNames(LocationStreamHandler.prototype).filter(name => name !== 'constructor')
         
-        functionNames.forEach((name) => {
-            console.log(name)
-            locationStreamHandler.pushFunction(locationStreamHandler[name].bind(locationStreamHandler))
-        })
+    //     functionNames.forEach((name) => {
+    //         locationStreamHandler.register(locationStreamHandler[name].bind(locationStreamHandler))
+    //     })
 
-        return locationStreamHandler
-    }
+    //     return locationStreamHandler
+    // }
 }
 
-module.exports = LocationStreamHandler.factory()
+module.exports = StreamHandler.streamHandlerFactory(LocationStreamHandler)
+// module.exports = LocationStreamHandler.factory()

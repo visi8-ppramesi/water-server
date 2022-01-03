@@ -3,7 +3,7 @@ class StreamHandler{
         this.pipe = []
     }
 
-    pushFunction(func){
+    register(func){
         this.pipe.push(func)
     }
 
@@ -17,6 +17,17 @@ class StreamHandler{
             }
             return prevResult
         }
+    }
+
+    static streamHandlerFactory(handlerObj){
+        const aggregateStreamHandler = new handlerObj()
+        const functionNames = Object.getOwnPropertyNames(handlerObj.prototype).filter(name => name !== 'constructor')
+        
+        functionNames.forEach((name) => {
+            aggregateStreamHandler.register(aggregateStreamHandler[name].bind(aggregateStreamHandler))
+        })
+
+        return aggregateStreamHandler
     }
 }
 

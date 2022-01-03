@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const env = require('dotenv').config().parsed
+const locationStreamHandler = require('../handlers/stream/location.js')
 
 const Schema = mongoose.Schema;
 
@@ -37,5 +39,9 @@ const LocationSchema = new Schema({
 }, { timestamps: true });
 
 const LocationModel = mongoose.model('location', LocationSchema)
+
+if(env.DB_IS_REPLICA_SET === 'true'){
+    LocationModel.watch().on('change', locationStreamHandler.invoker())
+}
 
 module.exports = LocationModel

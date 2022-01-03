@@ -6,20 +6,20 @@ class AggregateStreamHandler extends StreamHandler{
     }
 
     functionOne(args){
-        console.log(args)
+        console.log(args.data)
     }
 
-    static factory(){
-        const aggregateStreamHandler = new AggregateStreamHandler()
-        const functionNames = Object.getOwnPropertyNames(AggregateStreamHandler.prototype).filter(name => name !== 'constructor')
+    // static factory(){
+    //     const aggregateStreamHandler = new AggregateStreamHandler()
+    //     const functionNames = Object.getOwnPropertyNames(AggregateStreamHandler.prototype).filter(name => name !== 'constructor')
         
-        functionNames.forEach((name) => {
-            console.log(name)
-            aggregateStreamHandler.pushFunction(aggregateStreamHandler[name].bind(aggregateStreamHandler))
-        })
+    //     functionNames.forEach((name) => {
+    //         aggregateStreamHandler.register(aggregateStreamHandler[name].bind(aggregateStreamHandler))
+    //     })
 
-        return aggregateStreamHandler
-    }
+    //     return aggregateStreamHandler
+    // }
 }
 
-module.exports = AggregateStreamHandler.factory()
+module.exports = StreamHandler.streamHandlerFactory(AggregateStreamHandler)
+// module.exports = AggregateStreamHandler.factory()
